@@ -1,0 +1,78 @@
+version: "3.1"
+
+intents:
+  - greet
+  - goodbye
+  - ask_events
+  - ask_materials
+  - ask_fee
+  - ask_timetable
+  - affirm
+  - deny
+  - subject
+  - ask_announcements
+  - ask_placements
+
+entities:
+  - subject
+  - company
+  - semester
+
+slots:
+  subject:
+    type: text
+    influence_conversation: true
+    mappings:
+      - type: from_entity
+        entity: subject
+  company:
+    type: text
+    influence_conversation: true
+    mappings:
+      - type: from_entity
+        entity: company
+  semester:
+    type: text
+    influence_conversation: true
+    mappings:
+      - type: from_entity
+        entity: semester
+
+actions:
+  - action_get_events
+  - action_get_materials
+  - action_get_announcements
+  - action_get_placements
+  - action_get_question_papers
+
+responses:
+  utter_greet:
+  - text: "Hello! I'm your Campus AI Assistant 🎓. How can I help you today?"
+
+  utter_goodbye:
+  - text: "Goodbye! Have a great day 👋"
+
+  utter_ask_events:
+  - text: "You can check upcoming campus events at the Events page. Would you like me to take you there?"
+
+  utter_ask_materials:
+  - text: "Study materials are available in the Materials section. Visit the Materials page to download notes and resources."
+
+  utter_ask_fee:
+  - text: "Please visit the college admin office or the official website for detailed fee structure information."
+
+  utter_ask_timetable:
+  - text: "Your class timetable is available in the student portal. Please log in to check your schedule."
+
+  utter_affirm:
+  - text: "Great! Let me know if you need anything else."
+
+  utter_deny:
+  - text: "No problem. Is there anything else I can help you with?"
+
+  utter_please_rephrase:
+  - text: "I'm sorry, I didn't quite understand that. Can you please rephrase or ask about events, materials, or fees?"
+
+session_config:
+  session_expiration_time: 60
+  carry_over_slots_to_new_session: true

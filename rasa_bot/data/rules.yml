@@ -1,0 +1,56 @@
+version: "3.1"
+
+rules:
+- rule: Say goodbye anytime
+  steps:
+  - intent: goodbye
+  - action: utter_goodbye
+
+- rule: Greet anytime
+  steps:
+  - intent: greet
+  - action: utter_greet
+
+- rule: Handle events question
+  steps:
+  - intent: ask_events
+  - action: action_get_events
+
+- rule: Handle materials question
+  steps:
+  - intent: ask_materials
+  - action: action_get_materials
+
+- rule: Handle announcements question
+  steps:
+  - intent: ask_announcements
+  - action: action_get_announcements
+
+- rule: Handle placements question
+  steps:
+  - intent: ask_placements
+  - action: action_get_placements
+
+- rule: Handle question papers question
+  steps:
+  - intent: ask_question_papers
+  - action: action_get_question_papers
+
+- rule: Handle fee question
+  steps:
+  - intent: ask_fee
+  - action: utter_ask_fee
+
+- rule: Handle timetable question
+  steps:
+  - intent: ask_timetable
+  - action: utter_ask_timetable
+
+- rule: Implementation of Fallback
+  steps:
+  - intent: nlu_fallback
+  - action: utter_please_rephrase
+
+responses:
+  utter_please_rephrase:
+  - text: "I'm sorry, I didn't quite understand that. Can you please rephrase or ask about events, materials, or fees?"

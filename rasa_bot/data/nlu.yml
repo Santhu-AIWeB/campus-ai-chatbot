@@ -1,0 +1,206 @@
+version: "3.1"
+
+nlu:
+- regex: subject
+  examples: |
+    - [A-Za-z]+[0-9]+
+    - [A-Za-z]{3}_[A-Za-z]{3}
+
+- lookup: subject
+  examples: |
+    - java
+    - python
+    - math
+    - physics
+    - chemistry
+    - acsd44
+    - data
+    - algorithms
+    - electronics
+    - circuit
+    - english
+    - hindi
+    - history
+
+- intent: greet
+  examples: |
+    - hello
+    - hi
+    - hey
+    - good morning
+    - what's up
+
+- intent: ask_events
+  examples: |
+    - what events are happening
+    - show me upcoming events
+    - any events this week
+    - campus events
+    - Upcoming events
+    - upcoming events
+    - event list
+    - tell me about events
+    - upacoming events
+    - events
+
+- intent: ask_materials
+  examples: |
+    - where can I find study materials
+    - show study resources
+    - I need notes for my subject
+    - upload materials
+    - study materials
+    - materials
+    - books
+    - notes
+    - show me [java](subject) materials
+    - I want [python](subject) notes
+    - [math](subject) study materials
+    - do you have anything for [science](subject)
+    - [history](subject) ppt
+    - show [english](subject) pdf
+    - pdf for [physics](subject)
+    - give me [java](subject) ppt
+    - show me [python](subject) notes
+    - can I see [math](subject) materials
+    - get me [science](subject) pdf
+    - I need docs for [java](subject)
+    - help me with [math](subject)
+    - [python](subject) resources
+    - any [java](subject) files
+    - [java](subject) ppt
+    - [java](subject) pdf
+    - [ACSD44](subject)
+    - show me [ACSD44](subject)
+    - give me [ACSD44](subject) notes
+    - I want [ACSD44](subject) pdf
+    - [MATH101](subject)
+    - [CS202](subject) resources
+    - give me some materials
+    - what files do you have for [ACSD44](subject)
+    - show me [semester VII](semester) materials
+    - I want [semester 3](semester) notes
+    - [sem 1](semester) study materials
+    - give me [semester I](semester) [java](subject) notes
+    - [sem VIII](semester) [python](subject) materials
+    - [semester 4](semester) docs
+    - [sem 1](semester) study materials
+
+- intent: ask_question_papers
+  examples: |
+    - where can I find question papers
+    - show me previous question papers
+    - I need last year question papers
+    - previous exam papers
+    - question papers
+    - show me [java](subject) question papers
+    - I want [python](subject) previous papers
+    - [math](subject) question paper list
+    - do you have question papers for [science](subject)
+    - [history](subject) last year papers
+    - show [english](subject) exam papers
+    - previous papers for [physics](subject)
+    - give me [java](subject) question papers
+    - show me [python](subject) previous year papers
+    - can I see [math](subject) exam papers
+    - get me [science](subject) question papers
+    - I need papers for [java](subject)
+    - what papers do you have for [ACSD44](subject)
+    - show me [semester VII](semester) question papers
+    - I want [semester 3](semester) previous papers
+    - [sem 1](semester) question papers
+    - give me [semester I](semester) [java](subject) question papers
+    - [sem VIII](semester) [python](subject) exam papers
+    - [semester 4](semester) question paper docs
+    - i want [data](subject) question paper
+    - give me [data](subject) papers
+    - [semester VI](semester) [data](subject) papers
+    - show me papers for [data](subject)
+
+- intent: ask_fee
+  examples: |
+    - what is the fee structure
+    - how much is the fee
+    - college fee details
+    - tuition fees
+
+- intent: ask_timetable
+  examples: |
+    - what is my timetable
+    - show class schedule
+    - when is my next class
+
+- intent: goodbye
+  examples: |
+    - bye
+    - goodbye
+    - see you later
+    - exit
+
+- intent: affirm
+  examples: |
+    - yes
+    - yup
+    - indeed
+    - of course
+    - that sounds good
+    - correct
+
+- intent: ask_announcements
+  examples: |
+    - any latest announcements
+    - show me the new notices
+    - what are the campus announcements
+    - latest news
+    - when is the exam fee last date
+    - exam fess last date
+    - semester exam fess
+    - exam fee date
+    - last date for exams
+    - holiday notices
+    - is there a holiday announcement
+    - exam result date
+    - what is the last date for fee payment
+    - tell me about the latest announcements
+    - notices
+    - when is the annual day
+    - annual day function
+    - any updates on annual day
+    - when is the sports day
+    - tell me about sports day
+    - sports day date
+    - where is the annual day
+    - what is the venue for sports day
+    - annual day location
+    - tell me the place for annual day
+    - is there any traditional event
+    - traditional day
+    - when is the traditional day
+    - traditional event details
+- intent: ask_placements
+  examples: |
+    - are there any placements
+    - show me recruitment drives
+    - any companies hiring
+    - placement details
+    - what are the new job drives
+    - show me the placements
+    - job opportunities
+    - hiring news
+    - career opportunities
+    - tell me about placements
+    - recruitment info
+    - job list
+    - hiring updates
+    - give me [google](company) link
+    - show me [microsoft](company) drive
+    - I want to apply for [gemini](company)
+    - can you provide [tcs](company) details
+    - [amazon](company) recruitment link
+    - [google](company) hiring
+    - [microsoft](company) job role
+    - [gemini](company) placement info
+    - please provide [gemini](company) link i would like to apply
+    - how to apply for [microsoft](company)
+    - [facebook](company) hiring link
+    - [meta](company) drive details

@@ -1,0 +1,17 @@
+# Backend Python Dependencies – MongoDB edition
+flask==3.0.3
+flask-cors==4.0.1
+pymongo==4.3.3          # Compatible with Rasa 3.6.20
+PyJWT==2.8.0
+werkzeug==3.0.3
+requests==2.32.3
+python-dotenv==1.0.1
+
+# LLM (choose one)
+openai==1.35.0          # For OpenAI GPT models
+# ollama is accessed via REST — no pip package needed
+
+# Production Server
+gunicorn==22.0.0
+eventlet==0.36.1
+flask-socketio==5.3.6
