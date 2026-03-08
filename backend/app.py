@@ -24,10 +24,9 @@ app = Flask(__name__)
 app.config['MAX_CONTENT_LENGTH'] = 100 * 1024 * 1024   # 100 MB max upload size
 socketio = SocketIO(app, cors_allowed_origins="*")
 
-# Ultra-flexible CORS - Use default simple setup first
-CORS(app)
+# Ultra-flexible CORS configuration
+CORS(app, resources={r"/*": {"origins": "*"}})
 
-# Manually handle Preflight (OPTIONS) requests for extra safety
 @app.after_request
 def add_cors_headers(response):
     response.headers.add("Access-Control-Allow-Origin", "*")
@@ -46,9 +45,10 @@ def api_health():
 @app.before_request
 def log_request_info():
     from flask import request
-    if request.method == "OPTIONS":
-        return "", 200
+    # Do NOT return a response here for OPTIONS, let flask_cors and after_request handle it
     print(f"[LOG] {request.method} to {request.path}")
+
+app.url_map.strict_slashes = False
 
 # Register blueprints
 app.register_blueprint(chat_bp,          url_prefix='/api/chat')
