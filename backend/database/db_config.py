@@ -11,6 +11,10 @@ _db: Database = None
 def get_db() -> Database:
     global _client, _db
     if _db is None:
+        # Log a safe version of the URI for debugging (hides password)
+        safe_uri = MONGO_URI.split("@")[-1] if "@" in MONGO_URI else MONGO_URI
+        print(f"[DB] Connecting to: ...@{safe_uri}")
+        
         # Add a 5 second timeout so it doesn't hang in production
         _client = MongoClient(MONGO_URI, serverSelectionTimeoutMS=5000)
         _db = _client[DB_NAME]
