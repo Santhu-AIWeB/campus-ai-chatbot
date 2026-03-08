@@ -24,24 +24,23 @@ app = Flask(__name__)
 app.config['MAX_CONTENT_LENGTH'] = 100 * 1024 * 1024   # 100 MB max upload size
 socketio = SocketIO(app, cors_allowed_origins="*")
 
-# Proper CORS setup: allow all origins for production (or specific frontend URL)
-CORS(app, resources={r"/*": {
-    "origins": "*",
-    "methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-    "allow_headers": ["Content-Type", "Authorization"],
-    "supports_credentials": True,
-}})
+# Enable CORS for all routes and origins
+CORS(app, resources={r"/*": {"origins": "*"}}, supports_credentials=True)
 
 # Disable trailing-slash redirects
 app.url_map.strict_slashes = False
 
 @app.route('/')
 def health_check():
-    return {"status": "healthy", "message": "CampusAI Backend is Running"}, 200
+    return {"status": "healthy", "message": "Backend is running!"}, 200
+
+@app.route('/api/health')
+def api_health():
+    return {"status": "healthy", "message": "API prefix is working!"}, 200
 
 @app.before_request
 def log_request_info():
-    print(f"[REQUEST] {request.method} {request.url}")
+    print(f"[LOG] {request.method} to {request.path}")
 
 # Register blueprints
 app.register_blueprint(chat_bp,          url_prefix='/api/chat')

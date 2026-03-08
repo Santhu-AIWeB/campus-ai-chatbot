@@ -17,7 +17,9 @@ const Register = () => {
         if (form.password !== form.confirm) { setError('Passwords do not match.'); return; }
         setLoading(true); setError('');
         try {
-            const r = await fetch(`${BASE_URL}/auth/register`, {
+            const finalUrl = `${BASE_URL}/auth/register`;
+            console.log("Full Registration URL:", finalUrl);
+            const r = await fetch(finalUrl, {
                 method: 'POST', headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                     name: form.name,
