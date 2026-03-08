@@ -32,8 +32,16 @@ CORS(app, resources={r"/api/*": {
     "supports_credentials": True,
 }})
 
-# Disable trailing-slash redirects — these cause CORS preflight to fail
+# Disable trailing-slash redirects
 app.url_map.strict_slashes = False
+
+@app.route('/')
+def health_check():
+    return {"status": "healthy", "message": "CampusAI Backend is Running"}, 200
+
+@app.before_request
+def log_request_info():
+    print(f"[REQUEST] {request.method} {request.url}")
 
 # Register blueprints
 app.register_blueprint(chat_bp,          url_prefix='/api/chat')

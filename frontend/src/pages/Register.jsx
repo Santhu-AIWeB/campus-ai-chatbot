@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { BASE_URL } from '../services/api';
 
 const Register = () => {
     const [form, setForm] = useState({ name: '', email: '', password: '', confirm: '', role: 'student', semester: '' });
@@ -16,7 +17,7 @@ const Register = () => {
         if (form.password !== form.confirm) { setError('Passwords do not match.'); return; }
         setLoading(true); setError('');
         try {
-            const r = await fetch('/api/auth/register', {
+            const r = await fetch(`${BASE_URL}/auth/register`, {
                 method: 'POST', headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                     name: form.name,
@@ -29,7 +30,7 @@ const Register = () => {
             const rd = await r.json();
             if (!r.ok) throw new Error(rd.error || 'Registration failed');
 
-            const lr = await fetch('/api/auth/login', {
+            const lr = await fetch(`${BASE_URL}/auth/login`, {
                 method: 'POST', headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ email: form.email, password: form.password }),
             });

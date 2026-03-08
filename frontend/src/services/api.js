@@ -1,5 +1,5 @@
 // Use a relative path for local proxy, or an absolute path for production
-const BASE_URL = import.meta.env.VITE_API_URL || '/api';
+export const BASE_URL = import.meta.env.VITE_API_URL || '/api';
 console.log("Current API BASE_URL:", BASE_URL);
 
 export const login = async (email, password) => {
