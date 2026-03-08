@@ -1,5 +1,5 @@
 // Use a relative path for local proxy, or an absolute path for production
-let rawUrl = import.meta.env.VITE_API_URL || '/api';
+let rawUrl = (import.meta.env.VITE_API_URL || '/api').trim();
 if (rawUrl.startsWith('http') && !rawUrl.endsWith('/api')) {
     rawUrl = rawUrl.replace(/\/$/, '') + '/api';
 }

@@ -25,7 +25,8 @@ app.config['MAX_CONTENT_LENGTH'] = 100 * 1024 * 1024   # 100 MB max upload size
 socketio = SocketIO(app, cors_allowed_origins="*")
 
 # Enable CORS for all routes and origins
-CORS(app, resources={r"/*": {"origins": "*"}}, supports_credentials=True)
+# Note: supports_credentials must be False when using origins="*"
+CORS(app, resources={r"/*": {"origins": "*"}}, supports_credentials=False)
 
 # Disable trailing-slash redirects
 app.url_map.strict_slashes = False
