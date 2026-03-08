@@ -24,15 +24,16 @@ app = Flask(__name__)
 app.config['MAX_CONTENT_LENGTH'] = 100 * 1024 * 1024   # 100 MB max upload size
 socketio = SocketIO(app, cors_allowed_origins="*")
 
-# Ultra-flexible CORS for production debugging
-CORS(app, resources={r"/*": {
-    "origins": "*",
-    "methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-    "allow_headers": ["*"]
-}}, supports_credentials=False)
+# Ultra-flexible CORS - Use default simple setup first
+CORS(app)
 
-# Disable trailing-slash redirects
-app.url_map.strict_slashes = False
+# Manually handle Preflight (OPTIONS) requests for extra safety
+@app.after_request
+def add_cors_headers(response):
+    response.headers.add("Access-Control-Allow-Origin", "*")
+    response.headers.add("Access-Control-Allow-Headers", "*")
+    response.headers.add("Access-Control-Allow-Methods", "*")
+    return response
 
 @app.route('/')
 def health_check():
@@ -44,6 +45,9 @@ def api_health():
 
 @app.before_request
 def log_request_info():
+    from flask import request
+    if request.method == "OPTIONS":
+        return "", 200
     print(f"[LOG] {request.method} to {request.path}")
 
 # Register blueprints
