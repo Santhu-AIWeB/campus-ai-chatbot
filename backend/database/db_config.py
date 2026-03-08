@@ -11,7 +11,8 @@ _db: Database = None
 def get_db() -> Database:
     global _client, _db
     if _db is None:
-        _client = MongoClient(MONGO_URI)
+        # Add a 5 second timeout so it doesn't hang in production
+        _client = MongoClient(MONGO_URI, serverSelectionTimeoutMS=5000)
         _db = _client[DB_NAME]
     return _db
 

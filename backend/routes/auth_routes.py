@@ -39,17 +39,27 @@ def login():
 
 @auth_bp.route('/register', methods=['POST'])
 def register():
-    data = request.get_json()
-    print(f"[REGISTER] Attempt: email='{data.get('email')}', role='{data.get('role')}'")
-    if find_user_by_email(data.get('email', '')):
-        print(f"[REGISTER] FAIL — email already exists")
-        return jsonify({'error': 'Email already exists'}), 409
-    user = create_user(
-        name=data['name'],
-        email=data['email'],
-        password=data['password'],
-        semester=data.get('semester', ''),
-        role=data.get('role', 'student')
-    )
-    print(f"[REGISTER] SUCCESS — created user id={user['_id']}, hash starts with: {user.get('password_hash','')[:20]}")
-    return jsonify({'message': 'User created', 'id': user['_id']}), 201
+    try:
+        data = request.get_json()
+        if not data:
+            return jsonify({'error': 'No data provided'}), 400
+            
+        print(f"[REGISTER] Attempt: email='{data.get('email')}', role='{data.get('role')}'")
+        
+        email = data.get('email', '')
+        if find_user_by_email(email):
+            print(f"[REGISTER] FAIL — email already exists")
+            return jsonify({'error': 'Email already exists'}), 409
+            
+        user = create_user(
+            name=data.get('name', ''),
+            email=email,
+            password=data.get('password', ''),
+            semester=data.get('semester', ''),
+            role=data.get('role', 'student')
+        )
+        print(f"[REGISTER] SUCCESS — created user id={user['_id']}")
+        return jsonify({'message': 'User created', 'id': user['_id']}), 201
+    except Exception as e:
+        print(f"[REGISTER] CRASH: {str(e)}")
+        return jsonify({'error': f'Internal Server Error: {str(e)}'}), 500
