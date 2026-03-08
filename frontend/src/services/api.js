@@ -1,6 +1,10 @@
 // Use a relative path for local proxy, or an absolute path for production
-export const BASE_URL = import.meta.env.VITE_API_URL || '/api';
-console.log("Current API BASE_URL:", BASE_URL);
+let rawUrl = import.meta.env.VITE_API_URL || '/api';
+if (rawUrl.startsWith('http') && !rawUrl.endsWith('/api')) {
+    rawUrl = rawUrl.replace(/\/$/, '') + '/api';
+}
+export const BASE_URL = rawUrl;
+console.log("Verified API BASE_URL:", BASE_URL);
 
 export const login = async (email, password) => {
     const res = await fetch(`${BASE_URL}/auth/login`, {

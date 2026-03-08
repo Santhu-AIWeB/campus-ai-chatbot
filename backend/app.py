@@ -25,7 +25,7 @@ app.config['MAX_CONTENT_LENGTH'] = 100 * 1024 * 1024   # 100 MB max upload size
 socketio = SocketIO(app, cors_allowed_origins="*")
 
 # Proper CORS setup: allow all origins for production (or specific frontend URL)
-CORS(app, resources={r"/api/*": {
+CORS(app, resources={r"/*": {
     "origins": "*",
     "methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     "allow_headers": ["Content-Type", "Authorization"],
