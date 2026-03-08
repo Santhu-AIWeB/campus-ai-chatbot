@@ -4,7 +4,7 @@ eventlet.monkey_patch()
 import os
 from dotenv import load_dotenv
 load_dotenv()
-from flask import Flask
+from flask import Flask, jsonify, request
 from flask_cors import CORS
 from flask_socketio import SocketIO
 from routes.chat_routes import chat_bp
@@ -27,6 +27,17 @@ socketio = SocketIO(app, cors_allowed_origins="*")
 # Ultra-flexible CORS configuration
 CORS(app, resources={r"/*": {"origins": "*"}})
 
+@app.errorhandler(Exception)
+def handle_exception(e):
+    # Pass through HTTP errors
+    from werkzeug.exceptions import HTTPException
+    if isinstance(e, HTTPException):
+        return jsonify({"error": str(e.description)}), e.code
+    
+    # Handle non-HTTP exceptions (crashes / database errors)
+    print(f"[CRASH] {str(e)}")
+    return jsonify({"error": "Internal Server Error", "details": str(e)}), 500
+
 @app.after_request
 def add_cors_headers(response):
     response.headers.add("Access-Control-Allow-Origin", "*")
@@ -36,11 +47,11 @@ def add_cors_headers(response):
 
 @app.route('/')
 def health_check():
-    return {"status": "healthy", "message": "Backend is running!"}, 200
+    return jsonify({"status": "healthy", "message": "Backend is running!"}), 200
 
 @app.route('/api/health')
 def api_health():
-    return {"status": "healthy", "message": "API prefix is working!"}, 200
+    return jsonify({"status": "healthy", "message": "API prefix is working!"}), 200
 
 @app.before_request
 def log_request_info():
