@@ -4,7 +4,7 @@ import { useAuth } from '../context/AuthContext';
 import { BASE_URL } from '../services/api';
 
 const Register = () => {
-    const [form, setForm] = useState({ name: '', email: '', password: '', confirm: '', role: 'student', semester: '' });
+    const [form, setForm] = useState({ name: '', email: '', password: '', confirm: '', role: 'student', semester: '', adminKey: '' });
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
     const { login } = useAuth();
@@ -26,7 +26,8 @@ const Register = () => {
                     email: form.email,
                     password: form.password,
                     role: form.role,
-                    semester: form.role === 'student' ? form.semester : ''
+                    semester: form.role === 'student' ? form.semester : '',
+                    adminKey: form.role === 'admin' ? form.adminKey : ''
                 }),
             });
             const rd = await r.json();
@@ -114,26 +115,40 @@ const Register = () => {
                         </div>
                     </div>
 
-                    {form.role === 'student' && (
+                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
                         <div>
-                            <label style={{ display: 'block', color: 'var(--text-primary)', fontSize: '11px', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '6px', marginLeft: '4px' }}>Current Semester</label>
-                            <select name="semester" value={form.semester} onChange={set} required className="input"
+                            <label style={{ display: 'block', color: 'var(--text-primary)', fontSize: '11px', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '6px', marginLeft: '4px' }}>I am a...</label>
+                            <select name="role" value={form.role} onChange={set} className="input"
                                 style={{ height: '46px', borderRadius: '12px' }}>
-                                <option value="">Select Semester</option>
-                                <option value="I">Semester I</option>
-                                <option value="II">Semester II</option>
-                                <option value="III">Semester III</option>
-                                <option value="IV">Semester IV</option>
-                                <option value="V">Semester V</option>
-                                <option value="VI">Semester VI</option>
-                                <option value="VII">Semester VII</option>
-                                <option value="VIII">Semester VIII</option>
+                                <option value="student">Student</option>
+                                <option value="admin">Administrator</option>
                             </select>
                         </div>
-                    )}
-
-                    {/* Removed Role Selection (Security: Admin must promote students) */}
-                    <input type="hidden" name="role" value="student" />
+                        {form.role === 'admin' ? (
+                            <div className="animate-in fade-in slide-in-from-right-2 duration-300">
+                                <label style={{ display: 'block', color: 'var(--text-primary)', fontSize: '11px', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '6px', marginLeft: '4px' }}>Secret Admin Key</label>
+                                <input name="adminKey" type="password" value={form.adminKey} onChange={set} required className="input" placeholder="Admin Code"
+                                    style={{ height: '46px', borderRadius: '12px', borderColor: 'var(--accent)' }}
+                                />
+                            </div>
+                        ) : (
+                            <div>
+                                <label style={{ display: 'block', color: 'var(--text-primary)', fontSize: '11px', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '6px', marginLeft: '4px' }}>Current Semester</label>
+                                <select name="semester" value={form.semester} onChange={set} required className="input"
+                                    style={{ height: '46px', borderRadius: '12px' }}>
+                                    <option value="">Select Semester</option>
+                                    <option value="I">Semester I</option>
+                                    <option value="II">Semester II</option>
+                                    <option value="III">Semester III</option>
+                                    <option value="IV">Semester IV</option>
+                                    <option value="V">Semester V</option>
+                                    <option value="VI">Semester VI</option>
+                                    <option value="VII">Semester VII</option>
+                                    <option value="VIII">Semester VIII</option>
+                                </select>
+                            </div>
+                        )}
+                    </div>
 
                     <button type="submit" disabled={loading} className="btn-primary"
                         style={{ width: '100%', height: '50px', marginTop: '8px', borderRadius: '12px', fontSize: '15px', fontWeight: 700, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '10px' }}>

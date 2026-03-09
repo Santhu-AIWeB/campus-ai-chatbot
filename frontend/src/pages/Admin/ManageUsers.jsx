@@ -25,19 +25,6 @@ const ManageUsers = () => {
         loadUsers();
     }, []);
 
-    const promoteUser = async (userId) => {
-        if (!window.confirm('Are you sure you want to promote this user to Admin?')) return;
-        try {
-            await apiFetch('/auth/users/promote', {
-                method: 'POST',
-                body: JSON.stringify({ userId })
-            });
-            toast.success('User promoted to Admin!');
-            loadUsers();
-        } catch (err) {
-            toast.error('Promotion failed');
-        }
-    };
 
     const filtered = users.filter(u =>
         u.name?.toLowerCase().includes(query.toLowerCase()) ||
@@ -106,14 +93,6 @@ const ManageUsers = () => {
                                 </div>
                             </div>
 
-                            {u.role !== 'admin' && (
-                                <button
-                                    onClick={() => promoteUser(u.id)}
-                                    className="px-6 py-3 bg-blue-500 hover:bg-blue-600 text-white text-xs font-black rounded-xl transition-all shadow-lg shadow-blue-500/10 whitespace-nowrap"
-                                >
-                                    Promote to Admin
-                                </button>
-                            )}
                             {u.role === 'admin' && (
                                 <div className="text-amber-500 text-[10px] font-black uppercase flex items-center gap-2 mr-4">
                                     <ShieldCheck size={14} />

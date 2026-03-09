@@ -51,12 +51,20 @@ def register():
             print(f"[REGISTER] FAIL — email already exists")
             return jsonify({'error': 'Email already exists'}), 409
             
+        role = data.get('role', 'student')
+        if role == 'admin':
+            admin_key = data.get('adminKey')
+            secret_key = os.environ.get('ADMIN_REG_KEY', 'IARE_ADMIN_2026')
+            if admin_key != secret_key:
+                print(f"[REGISTER] FAIL — invalid admin key")
+                return jsonify({'error': 'Invalid Admin Registration Key'}), 403
+
         user = create_user(
             name=data.get('name', ''),
             email=email,
             password=data.get('password', ''),
             semester=data.get('semester', ''),
-            role=data.get('role', 'student')
+            role=role
         )
         print(f"[REGISTER] SUCCESS — created user id={user['_id']}")
         return jsonify({'message': 'User created', 'id': user['_id']}), 201
