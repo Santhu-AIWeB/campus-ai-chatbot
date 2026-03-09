@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Users, Plus, MessageSquare, ArrowRight, BookOpen, Hash, ChevronRight, Loader2 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useToast } from '../components/ui/Toast';
+import { BASE_URL } from '../services/api';
 
 const StudyRooms = () => {
     const navigate = useNavigate();
@@ -15,7 +16,7 @@ const StudyRooms = () => {
     const fetchRooms = async () => {
         try {
             const token = localStorage.getItem('token');
-            const res = await fetch('/api/rooms/', {
+            const res = await fetch(`${BASE_URL}/rooms/`, {
                 headers: { 'Authorization': `Bearer ${token}` }
             });
             const data = await res.json();
@@ -38,7 +39,7 @@ const StudyRooms = () => {
         setCreating(true);
         try {
             const token = localStorage.getItem('token');
-            const res = await fetch('/api/rooms/', {
+            const res = await fetch(`${BASE_URL}/rooms/`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

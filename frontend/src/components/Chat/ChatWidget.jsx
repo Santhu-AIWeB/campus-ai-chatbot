@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useAuth } from '../../context/AuthContext';
+import { BASE_URL } from '../../services/api';
 
 const ChatWidget = () => {
     const { user } = useAuth();
@@ -19,7 +20,7 @@ const ChatWidget = () => {
         setInput('');
         setTyping(true);
         try {
-            const res = await fetch('/api/chat/', {
+            const res = await fetch(`${BASE_URL}/chat/`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ message: text, semester: user?.semester })

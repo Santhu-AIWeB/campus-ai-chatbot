@@ -1,6 +1,8 @@
+import { BASE_URL } from './api';
+
 export const getRegistrations = async () => {
     try {
-        const response = await fetch('/api/registrations/');
+        const response = await fetch(`${BASE_URL}/registrations/`);
         if (!response.ok) throw new Error('Failed to fetch registrations');
         return await response.json();
     } catch (error) {
@@ -11,7 +13,7 @@ export const getRegistrations = async () => {
 
 export const deleteRegistration = async (id) => {
     try {
-        const response = await fetch(`/api/registrations/${id}`, {
+        const response = await fetch(`${BASE_URL}/registrations/${id}`, {
             method: 'DELETE',
         });
         if (!response.ok) throw new Error('Failed to delete registration');
@@ -23,7 +25,7 @@ export const deleteRegistration = async (id) => {
 };
 export const getRegistrationsByEvent = async (eventId) => {
     try {
-        const response = await fetch(`/api/registrations/event/${eventId}`);
+        const response = await fetch(`${BASE_URL}/registrations/event/${eventId}`);
         if (!response.ok) throw new Error('Failed to fetch event registrations');
         return await response.json();
     } catch (error) {

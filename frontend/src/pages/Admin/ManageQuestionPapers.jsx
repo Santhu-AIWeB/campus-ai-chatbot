@@ -2,6 +2,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import MaterialCard from '../../components/Material/MaterialCard';
 import { useToast } from '../../components/ui/Toast';
 import { getQuestionPapers, deleteQuestionPaper, updateQuestionPaper } from '../../services/questionPaperService';
+import { BASE_URL } from '../../services/api';
 import Pagination from '../../components/Common/Pagination';
 
 const SEMESTERS = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII'];
@@ -75,7 +76,7 @@ const ManageQuestionPapers = () => {
 
                 await new Promise((resolve, reject) => {
                     const xhr = new XMLHttpRequest();
-                    xhr.open('POST', '/api/question-papers/');
+                    xhr.open('POST', `${BASE_URL}/question-papers/`);
                     xhr.upload.onprogress = (ev) => {
                         if (ev.lengthComputable) setProgress(Math.round((ev.loaded / ev.total) * 100));
                     };

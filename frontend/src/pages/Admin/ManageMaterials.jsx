@@ -2,6 +2,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import MaterialCard from '../../components/Material/MaterialCard';
 import { useToast } from '../../components/ui/Toast';
 import { getMaterials, deleteMaterial, updateMaterial } from '../../services/materialService';
+import { BASE_URL } from '../../services/api';
 import Pagination from '../../components/Common/Pagination';
 
 const TYPES = ['Auto-detect', 'PDF', 'PPT', 'Video', 'Notes', 'Question Paper', 'Other'];
@@ -95,7 +96,7 @@ const ManageMaterials = () => {
 
                 await new Promise((resolve, reject) => {
                     const xhr = new XMLHttpRequest();
-                    xhr.open('POST', '/api/materials/');
+                    xhr.open('POST', `${BASE_URL}/materials/`);
                     xhr.upload.onprogress = (ev) => {
                         if (ev.lengthComputable) setProgress(Math.round((ev.loaded / ev.total) * 100));
                     };

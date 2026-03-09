@@ -3,6 +3,7 @@ import PlacementCard from '../components/Placement/PlacementCard';
 import { useAuth } from '../context/AuthContext';
 import { Search, MapPin } from 'lucide-react';
 import Pagination from '../components/Common/Pagination';
+import { BASE_URL } from '../services/api';
 
 const PlacementsPage = () => {
     const { user } = useAuth();
@@ -25,8 +26,8 @@ const PlacementsPage = () => {
     const loadData = async (pageNum) => {
         setLoading(true);
         try {
-            const rp = await fetch(`/api/placements/?page=${pageNum}&limit=${limit}`);
-            const ra = await fetch('/api/placements/applications');
+            const rp = await fetch(`${BASE_URL}/placements/?page=${pageNum}&limit=${limit}`);
+            const ra = await fetch(`${BASE_URL}/placements/applications`);
             const pd = await rp.json();
             const ad = await ra.json();
             setPlacements(pd.items || []);
@@ -46,7 +47,7 @@ const PlacementsPage = () => {
 
     const handleApply = async (p_id) => {
         try {
-            const res = await fetch('/api/placements/apply', {
+            const res = await fetch(`${BASE_URL}/placements/apply`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({

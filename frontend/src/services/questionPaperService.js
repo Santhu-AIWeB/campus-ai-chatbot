@@ -1,4 +1,4 @@
-import { apiFetch, authHeader } from './api';
+import { apiFetch, authHeader, BASE_URL } from './api';
 
 export const getQuestionPapers = (page = 1, limit = 10, semester = '') => {
     let url = `/question-papers?page=${page}&limit=${limit}`;
@@ -11,7 +11,7 @@ export const deleteQuestionPaper = (id) => apiFetch(`/question-papers/${id}`, { 
 export const updateQuestionPaper = (id, data) => apiFetch(`/question-papers/${id}`, { method: 'PUT', body: JSON.stringify(data) });
 
 export const addQuestionPaper = (formData) => {
-    return fetch('/api/question-papers', {
+    return fetch(`${BASE_URL}/question-papers`, {
         method: 'POST',
         headers: {
             ...authHeader()

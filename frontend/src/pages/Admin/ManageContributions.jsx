@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useToast } from '../../components/ui/Toast';
 import { Eye, CheckCircle, XCircle, User, Calendar, Book, Layers, Loader2 } from 'lucide-react';
+import { BASE_URL } from '../../services/api';
 
 const ManageContributions = () => {
     const { addToast } = useToast();
@@ -12,7 +13,7 @@ const ManageContributions = () => {
         setLoading(true);
         try {
             const token = localStorage.getItem('token');
-            const res = await fetch('/api/materials/pending', {
+            const res = await fetch(`${BASE_URL}/materials/pending`, {
                 headers: { 'Authorization': `Bearer ${token}` }
             });
             const data = await res.json();
@@ -32,7 +33,7 @@ const ManageContributions = () => {
         setActionId(id);
         try {
             const token = localStorage.getItem('token');
-            const res = await fetch(`/api/materials/${id}/status`, {
+            const res = await fetch(`${BASE_URL}/materials/${id}/status`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',

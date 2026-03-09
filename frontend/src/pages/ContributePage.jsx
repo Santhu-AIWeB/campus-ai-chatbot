@@ -3,6 +3,7 @@ import { Upload, CheckCircle, FileText, XCircle, ArrowLeft, Loader2 } from 'luci
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { useToast } from '../components/ui/Toast';
+import { BASE_URL } from '../services/api';
 
 const ContributePage = () => {
     const { user } = useAuth();
@@ -49,7 +50,7 @@ const ContributePage = () => {
 
         try {
             const token = localStorage.getItem('token');
-            const res = await fetch('/api/materials/student-upload', {
+            const res = await fetch(`${BASE_URL}/materials/student-upload`, {
                 method: 'POST',
                 headers: { 'Authorization': `Bearer ${token}` },
                 body: formData

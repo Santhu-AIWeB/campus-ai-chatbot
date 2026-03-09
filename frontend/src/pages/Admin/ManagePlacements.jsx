@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useToast } from '../../components/ui/Toast';
 import { Plus, Search, Trash2, Users, FileText, ChevronDown, Download, AlertCircle, ExternalLink, Edit, Briefcase, MapPin, Calendar, DollarSign } from 'lucide-react';
 import Pagination from '../../components/Common/Pagination';
+import { BASE_URL } from '../../services/api';
 
 const ManagePlacements = () => {
     const [drives, setDrives] = useState([]);
@@ -41,7 +42,7 @@ const ManagePlacements = () => {
     const loadDrives = async () => {
         setLoading(true);
         try {
-            const res = await fetch(`/api/placements/?page=${page}&limit=${limit}`);
+            const res = await fetch(`${BASE_URL}/placements/?page=${page}&limit=${limit}`);
             const data = await res.json();
             setDrives(data.items || []);
             setTotalPages(data.pages || 1);
@@ -86,7 +87,7 @@ const ManagePlacements = () => {
         e.preventDefault();
         setSaving(true);
         try {
-            const url = editingItem ? `/api/placements/${editingItem.id || editingItem._id}` : '/api/placements/';
+            const url = editingItem ? `${BASE_URL}/placements/${editingItem.id || editingItem._id}` : `${BASE_URL}/placements/`;
             const method = editingItem ? 'PUT' : 'POST';
 
             const res = await fetch(url, {
@@ -117,7 +118,7 @@ const ManagePlacements = () => {
     const handleDelete = async (id) => {
         if (!window.confirm('Delete this drive?')) return;
         try {
-            const res = await fetch(`/api/placements/${id}`, { method: 'DELETE' });
+            const res = await fetch(`${BASE_URL}/placements/${id}`, { method: 'DELETE' });
             if (res.ok) {
                 toast.success('Drive deleted');
                 loadDrives();
@@ -131,7 +132,7 @@ const ManagePlacements = () => {
         setSelectedDrive(drive);
         setLoadingApplicants(true);
         try {
-            const res = await fetch(`/api/placements/applications/${drive.id || drive._id}`);
+            const res = await fetch(`${BASE_URL}/placements/applications/${drive.id || drive._id}`);
             const data = await res.json();
             setApplicants(data);
         } catch {
@@ -143,7 +144,7 @@ const ManagePlacements = () => {
 
     const updateStatus = async (appId, newStatus) => {
         try {
-            const res = await fetch(`/api/placements/applications/${appId}/status`, {
+            const res = await fetch(`${BASE_URL}/placements/applications/${appId}/status`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ status: newStatus })

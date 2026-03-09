@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useAuth } from '../../context/AuthContext';
+import { BASE_URL } from '../../services/api';
 
 const BANNER_COLORS = [
     { from: '#0D2137', to: '#0F172A' },
@@ -25,7 +26,7 @@ const EventCard = ({ event }) => {
         const checkRegistration = async () => {
             if (!user?.email) return;
             try {
-                const res = await fetch(`/api/registrations/event/${event.id || event._id}`);
+                const res = await fetch(`${BASE_URL}/registrations/event/${event.id || event._id}`);
                 const registrations = await res.json();
                 const alreadyRegistered = registrations.some(r => r.email === user.email);
                 setIsRegistered(alreadyRegistered);
@@ -52,7 +53,7 @@ const EventCard = ({ event }) => {
         };
 
         try {
-            const res = await fetch('/api/registrations/', {
+            const res = await fetch(`${BASE_URL}/registrations/`, {
                 method: 'POST', headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(registrationData),
             });
