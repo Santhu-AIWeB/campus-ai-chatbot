@@ -26,6 +26,7 @@ import ManageContributions from './pages/Admin/ManageContributions';
 import AdminScanner from './pages/Admin/AdminScanner';
 import StudyRooms from './pages/StudyRooms';
 import ChatRoom from './pages/ChatRoom';
+import ManageUsers from './pages/Admin/ManageUsers';
 
 const ProtectedRoute = ({ children, adminOnly = false }) => {
     const { user } = useAuth();
@@ -64,6 +65,7 @@ const AppRoutes = () => (
         <Route path="/admin/announcements" element={wrap(ManageAnnouncements, true)} />
         <Route path="/admin/registrations" element={wrap(ManageRegistrations, true)} />
         <Route path="/admin/placements" element={wrap(ManagePlacements, true)} />
+        <Route path="/admin/users" element={wrap(ManageUsers, true)} />
         <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
 );

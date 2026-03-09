@@ -148,6 +148,7 @@ const AdminDashboard = () => {
         { to: '/admin/materials', icon: Library, label: 'Manage Materials', desc: 'Upload study files & notes', accent: '#06B6D4' },
         { to: '/admin/announcements', icon: Megaphone, label: 'Manage Announcements', desc: 'Post important campus notices', accent: '#F59E0B' },
         { to: '/admin/registrations', icon: CheckCircle, label: 'Manage Registrations', desc: 'Track student event signups', accent: '#10B981' },
+        { to: '/admin/users', icon: Users, label: 'Manage Users', desc: 'Promote students to administrators', accent: '#3B82F6' },
         { to: '/admin/placements', icon: Briefcase, label: 'Manage Placements', desc: 'Post and track job opportunities', accent: '#A855F7' },
     ];
 

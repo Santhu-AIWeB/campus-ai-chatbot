@@ -132,14 +132,8 @@ const Register = () => {
                         </div>
                     )}
 
-                    <div>
-                        <label style={{ display: 'block', color: 'var(--text-primary)', fontSize: '11px', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '6px', marginLeft: '4px' }}>I am a...</label>
-                        <select name="role" value={form.role} onChange={set} className="input"
-                            style={{ height: '46px', borderRadius: '12px' }}>
-                            <option value="student">Student</option>
-                            <option value="admin">Administrator</option>
-                        </select>
-                    </div>
+                    {/* Removed Role Selection (Security: Admin must promote students) */}
+                    <input type="hidden" name="role" value="student" />
 
                     <button type="submit" disabled={loading} className="btn-primary"
                         style={{ width: '100%', height: '50px', marginTop: '8px', borderRadius: '12px', fontSize: '15px', fontWeight: 700, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '10px' }}>

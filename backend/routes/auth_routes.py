@@ -63,3 +63,28 @@ def register():
     except Exception as e:
         print(f"[REGISTER] CRASH: {str(e)}")
         return jsonify({'error': f'Internal Server Error: {str(e)}'}), 500
+
+@auth_bp.route('/users', methods=['GET'])
+def get_all_users():
+    from models.user_model import get_users, user_to_dict
+    users = list(get_users().find())
+    return jsonify([user_to_dict(u) for u in users])
+
+@auth_bp.route('/users/promote', methods=['POST'])
+def promote_user():
+    data = request.get_json()
+    user_id = data.get('userId')
+    if not user_id:
+        return jsonify({'error': 'User ID is required'}), 400
+        
+    from models.user_model import get_users
+    from bson import ObjectId
+    result = get_users().update_one({'_id': ObjectId(user_id)}, {'$set': {'role': 'admin'}})
+    
+    if result.modified_count > 0:
+        return jsonify({'message': 'User promoted to admin successfully'})
+    return jsonify({'error': 'User not found or already admin'}), 404
+    
+    if result.modified_count > 0:
+        return jsonify({'message': 'User promoted to admin successfully'})
+    return jsonify({'error': 'User not found or already admin'}), 404

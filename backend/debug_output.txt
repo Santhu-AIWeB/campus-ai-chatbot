@@ -1,0 +1,9 @@
+--- ALL MATERIALS ---
+ID: 69ae8f9dd217f1373337475e, Title: ACSD44, Semester: 'I', Status: 'approved', Type: 'PDF'
+
+Total materials: 1
+
+--- RECENT USERS ---
+ID: 69ae8d00d217f1373337475d, Email: 24955A6617@iare.ac.in, Semester: 'VI', Role: 'student'
+ID: 69ae83d1afb230d51e446b59, Email: vs9074342@gmail.com, Semester: '', Role: 'admin'
+ID: 69ae836dafb230d51e446b58, Email: 23951a66h3@iare.ac.in, Semester: 'II', Role: 'student'

@@ -47,6 +47,7 @@ const ADMIN_NAV = [
     { to: '/admin/announcements', label: 'Announcements', icon: Megaphone, desc: 'Post notices' },
     { to: '/admin/scanner', label: 'QR Scanner', icon: Scan, desc: 'Mark attendance' },
     { to: '/admin/registrations', label: 'Registrations', icon: CheckCircle, desc: 'Manage registrations' },
+    { to: '/admin/users', label: 'Manage Users', icon: Users, desc: 'Promote students' },
     { to: '/admin/placements', label: 'Placements', icon: Briefcase, desc: 'Manage drives' },
 ];
 
