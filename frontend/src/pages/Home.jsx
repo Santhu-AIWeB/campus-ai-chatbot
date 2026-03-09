@@ -4,6 +4,7 @@ import { useAuth } from '../context/AuthContext';
 import { getEvents } from '../services/eventService';
 import { getMaterials } from '../services/materialService';
 import { getAnnouncements } from '../services/announcementService';
+import { BASE_URL } from '../services/api';
 import {
     Calendar,
     Library,
@@ -138,7 +139,7 @@ const Home = () => {
 
         if (!isAdmin && user) {
             const token = localStorage.getItem('token');
-            fetch(`http://localhost:5000/api/history/my-history`, {
+            fetch(`${BASE_URL}/history/my-history`, {
                 headers: { 'Authorization': `Bearer ${token}` }
             })
                 .then(res => res.json())

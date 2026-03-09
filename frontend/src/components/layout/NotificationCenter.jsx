@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Bell, X, Calendar, BookOpen, Briefcase, Info, ArrowRight } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { BASE_URL } from '../../services/api';
 
 const NotificationCenter = () => {
     const [notifications, setNotifications] = useState([]);
@@ -20,7 +21,7 @@ const NotificationCenter = () => {
         const fetchNotifications = async () => {
             try {
                 const token = localStorage.getItem('token');
-                const res = await fetch('http://localhost:5000/api/notifications', {
+                const res = await fetch(`${BASE_URL}/notifications`, {
                     headers: { 'Authorization': `Bearer ${token}` }
                 });
                 if (res.ok) {
@@ -64,7 +65,7 @@ const NotificationCenter = () => {
             try {
                 const token = localStorage.getItem('token');
                 // We don't necessarily need to WAIT for the server to navigate
-                fetch(`http://localhost:5000/api/notifications/${n.id}/read`, {
+                fetch(`${BASE_URL}/notifications/${n.id}/read`, {
                     method: 'PUT',
                     headers: { 'Authorization': `Bearer ${token}` }
                 });

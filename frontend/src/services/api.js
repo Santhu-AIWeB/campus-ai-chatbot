@@ -1,12 +1,18 @@
-// Use a relative path for local proxy, or an absolute path for production
 // .replace(/\s/g, '') removes ALL spaces and newlines
 let rawUrl = (import.meta.env.VITE_API_URL || '/api').replace(/\s/g, '');
 
-if (rawUrl.startsWith('http') && !rawUrl.endsWith('/api')) {
-    rawUrl = rawUrl.replace(/\/$/, '') + '/api';
+if (rawUrl.startsWith('http')) {
+    rawUrl = rawUrl.replace(/\/$/, '');
+    if (!rawUrl.endsWith('/api')) {
+        rawUrl += '/api';
+    }
 }
+
 export const BASE_URL = rawUrl;
+export const ROOT_URL = rawUrl.startsWith('http') ? rawUrl.replace(/\/api$/, '') : '';
+
 console.log("CLEAN API URL:", `"${BASE_URL}"`);
+console.log("ROOT URL (Socket):", `"${ROOT_URL}"`);
 
 export const login = async (email, password) => {
     const res = await fetch(`${BASE_URL}/auth/login`, {
