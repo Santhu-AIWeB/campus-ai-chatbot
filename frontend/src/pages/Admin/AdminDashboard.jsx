@@ -1,11 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
-import { BASE_URL } from '../../services/api';
-import { getEvents } from '../../services/eventService';
-import { getMaterials } from '../../services/materialService';
-import { getAnnouncements } from '../../services/announcementService';
-import { getRegistrations } from '../../services/registrationService';
+import { BASE_URL, apiFetch } from '../../services/api';
 import {
     Calendar,
     Library,
@@ -123,11 +119,11 @@ const AdminDashboard = () => {
 
     useEffect(() => {
         Promise.all([
-            fetch(`${BASE_URL}/events?limit=100`).then(r => r.json()),
-            fetch(`${BASE_URL}/materials?limit=100`).then(r => r.json()),
-            fetch(`${BASE_URL}/announcements?limit=100`).then(r => r.json()),
-            fetch(`${BASE_URL}/registrations`).then(r => r.json()),
-            fetch(`${BASE_URL}/placements?limit=100`).then(r => r.json())
+            apiFetch('/events?limit=100'),
+            apiFetch('/materials?limit=100'),
+            apiFetch('/announcements?limit=100'),
+            apiFetch('/registrations'),
+            apiFetch('/placements?limit=100')
         ])
             .then(([ev, mat, ann, reg, plc]) => {
                 setCounts({

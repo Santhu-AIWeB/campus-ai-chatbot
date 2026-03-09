@@ -24,7 +24,8 @@ def list_question_papers():
     return jsonify(get_all_question_papers(page, limit, semester))
 
 @question_paper_bp.route('/', methods=['POST'])
-def add_question_paper():
+@token_required
+def add_question_paper(current_user):
     """Handle multipart/form-data file upload."""
     if request.files and 'file' in request.files:
         file = request.files['file']

@@ -76,7 +76,11 @@ const ManageQuestionPapers = () => {
 
                 await new Promise((resolve, reject) => {
                     const xhr = new XMLHttpRequest();
-                    xhr.open('POST', `${BASE_URL}/question-papers/`);
+                    xhr.open('POST', `${BASE_URL}/question-papers`);
+
+                    const token = localStorage.getItem('token');
+                    if (token) xhr.setRequestHeader('Authorization', `Bearer ${token}`);
+
                     xhr.upload.onprogress = (ev) => {
                         if (ev.lengthComputable) setProgress(Math.round((ev.loaded / ev.total) * 100));
                     };
