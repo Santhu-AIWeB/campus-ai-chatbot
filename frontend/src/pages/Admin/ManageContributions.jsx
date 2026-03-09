@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useToast } from '../../components/ui/Toast';
 import { Eye, CheckCircle, XCircle, User, Calendar, Book, Layers, Loader2 } from 'lucide-react';
-import { BASE_URL } from '../../services/api';
+import { BASE_URL, ROOT_URL } from '../../services/api';
 
 const ManageContributions = () => {
     const { addToast } = useToast();
@@ -116,7 +116,11 @@ const ManageContributions = () => {
 
                             <div className="flex md:flex-col gap-3 justify-center border-t md:border-t-0 md:border-l border-[var(--border)] pt-5 md:pt-0 md:pl-6 min-w-[140px]">
                                 <button
-                                    onClick={() => window.open(item.fileUrl, '_blank')}
+                                    onClick={() => {
+                                        const url = item.fileUrl || item.file_url;
+                                        const finalUrl = (url && url.startsWith('/api')) ? `${ROOT_URL}${url}` : url;
+                                        window.open(finalUrl, '_blank');
+                                    }}
                                     className="flex-1 flex items-center justify-center gap-2 py-3 bg-[var(--bg-surface)] hover:bg-[var(--bg-card-hover)] text-[var(--text-primary)] font-black text-xs rounded-xl border border-[var(--border)] transition-all"
                                 >
                                     <Eye size={14} /> Preview

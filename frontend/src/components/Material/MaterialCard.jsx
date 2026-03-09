@@ -1,5 +1,6 @@
 import React from 'react';
 import { FileText, BarChart, Video, FilePen, Folder, Eye, Download, ShieldCheck } from 'lucide-react';
+import { ROOT_URL } from '../../services/api';
 
 const TYPE_META = {
     PDF: { icon: FileText, accent: '#F87171', bg: 'rgba(248,113,113,0.1)', border: 'rgba(248,113,113,0.2)' },
@@ -21,7 +22,8 @@ const MaterialCard = ({ material }) => {
 
     const meta = TYPE_META[material.type] || DEF;
     const Icon = meta.icon;
-    const fileLink = material.file_url || material.fileUrl;
+    const rawLink = material.file_url || material.fileUrl;
+    const fileLink = (rawLink && rawLink.startsWith('/api')) ? `${ROOT_URL}${rawLink}` : rawLink;
 
     const handleDownload = (e) => {
         e.preventDefault();
