@@ -77,28 +77,12 @@ const AdminScanner = () => {
                 <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-[0.03]" />
             </div>
 
-            {/* ── Header ── */}
-            <header className="relative z-10 p-6 flex items-center justify-between max-w-5xl mx-auto w-full">
-                <button
-                    onClick={() => navigate('/admin')}
-                    className="flex items-center gap-2 px-4 py-2 rounded-xl bg-slate-900/50 border border-slate-800 hover:border-blue-500/50 hover:bg-slate-800 transition-all group font-bold text-sm"
-                >
-                    <ArrowLeft size={18} className="group-hover:-translate-x-1 transition-transform" />
-                    Exit
-                </button>
-                <div className="flex items-center gap-3">
-                    <div className="p-2 bg-blue-500/10 rounded-lg text-blue-500 border border-blue-500/20">
-                        <Shield size={20} strokeWidth={2.5} />
-                    </div>
-                    <span className="text-xs font-black uppercase tracking-[0.2em] text-slate-400">Security Terminal</span>
-                </div>
-            </header>
 
             {/* ── Main Content ── */}
             <main className="relative z-10 flex-1 flex flex-col items-center justify-center p-6 max-w-xl mx-auto w-full">
 
                 <div className="text-center mb-10 animate-in fade-in slide-in-from-top-4 duration-700">
-                    <h1 className="text-4xl font-black tracking-tighter text-white mb-2">GateKeeper <span className="text-blue-500 font-extrabold italic">v2.0</span></h1>
+                    <h1 className="text-4xl font-black tracking-tighter text-white mb-2">Attendance <span className="text-blue-500 font-extrabold italic">Terminal</span></h1>
                     <p className="text-slate-500 font-medium">Scan student digital passes for rapid attendance verification.</p>
                 </div>
 
@@ -106,8 +90,8 @@ const AdminScanner = () => {
                 <div className="w-full relative group">
                     {/* Glowing outer frame */}
                     <div className={`absolute -inset-1 rounded-[2.5rem] blur opacity-30 transition-all duration-500 ${scanResult?.status === 'success' ? 'bg-green-500 opacity-60' :
-                            scanResult?.status === 'error' ? 'bg-red-500 opacity-60' :
-                                'bg-blue-600 group-hover:opacity-50'
+                        scanResult?.status === 'error' ? 'bg-red-500 opacity-60' :
+                            'bg-blue-600 group-hover:opacity-50'
                         }`} />
 
                     <div className="relative bg-slate-900/80 backdrop-blur-2xl border border-white/10 rounded-[2.5rem] overflow-hidden shadow-2xl aspect-square sm:aspect-auto">
@@ -137,8 +121,8 @@ const AdminScanner = () => {
                         {/* Processing / Result Overlay */}
                         {scanResult && (
                             <div className={`absolute inset-0 z-20 flex flex-col items-center justify-center backdrop-blur-xl animate-in fade-in zoom-in duration-300 ${scanResult.status === 'success' ? 'bg-green-950/40' :
-                                    scanResult.status === 'error' ? 'bg-red-950/40' :
-                                        'bg-blue-950/40'
+                                scanResult.status === 'error' ? 'bg-red-950/40' :
+                                    'bg-blue-950/40'
                                 }`}>
                                 {scanResult.status === 'processing' && (
                                     <>
