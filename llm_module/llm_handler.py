@@ -68,7 +68,7 @@ def _groq_chat(system_prompt: str, user_message: str) -> str:
     """Use Groq's cloud API (Free Tier)."""
     try:
         import requests
-        api_key = os.environ.get('GROQ_API_KEY')
+        api_key = os.environ.get('GROQ_API_KEY', '').strip()
         if not api_key:
             return "Groq API Key missing. Please set GROQ_API_KEY."
         
