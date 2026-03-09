@@ -84,62 +84,51 @@ def add_material(current_user):
     # Only admins can use the standard POST to auto-approve
     if current_user['role'] != 'admin':
         return jsonify({'error': 'Unauthorized. Use /student-upload for contributions.'}), 403
-        file    = request.files['file']
-        title   = request.form.get('title', '').strip()
-        subject = request.form.get('subject', '').strip()
-        semester = request.form.get('semester', '').strip()
-        mat_type = request.form.get('type', '').strip()
-
-        if not file or file.filename == '':
-            return jsonify({'error': 'No file selected'}), 400
-        if not allowed_file(file.filename):
-            return jsonify({'error': 'File type not allowed'}), 400
-        if not title:
-            title = file.filename  # fall back to filename as title
-
-        # Build a safe unique filename
-        ext       = file.filename.rsplit('.', 1)[-1].lower()
-        safe_name = f"{uuid.uuid4().hex}.{ext}"
-        save_path = os.path.join(UPLOAD_FOLDER, safe_name)
-        file.save(save_path)
-
-        material = create_material({
-            'title':    title,
-            'subject':  subject,
-            'semester': semester,
-            'type':     mat_type or guess_type(file.filename),
-            'file_url': f'/api/materials/file/{safe_name}',
-            'original_filename': file.filename,
-            'status': 'approved',
-            'contributor_name': 'Admin',
-            'contributor_email': current_user['email']
-        })
+    
+    if 'file' not in request.files:
+        return jsonify({'error': 'No file selected'}), 400
         
-        # Trigger Notification
-        create_notification(
-            type='material',
-            title='New Material Available!',
-            message=f"New {material.get('type')}: '{material.get('title')}' is ready for {material.get('semester')}. Click to view.",
-            semester=semester,
-            link='/materials'
-        )
+    file    = request.files['file']
+    title   = request.form.get('title', '').strip()
+    subject = request.form.get('subject', '').strip()
+    semester = request.form.get('semester', '').strip()
+    mat_type = request.form.get('type', '').strip()
 
-        return jsonify(material), 201
+    if file.filename == '':
+        return jsonify({'error': 'No file selected'}), 400
+    if not allowed_file(file.filename):
+        return jsonify({'error': 'File type not allowed'}), 400
+    if not title:
+        title = file.filename  # fall back to filename as title
 
-    material_data['status'] = 'approved'
-    material_data['contributor_email'] = current_user['email']
-    new_material = create_material(material_data)
+    # Build a safe unique filename
+    ext       = file.filename.rsplit('.', 1)[-1].lower()
+    safe_name = f"{uuid.uuid4().hex}.{ext}"
+    save_path = os.path.join(UPLOAD_FOLDER, safe_name)
+    file.save(save_path)
+
+    material = create_material({
+        'title':    title,
+        'subject':  subject,
+        'semester': semester,
+        'type':     mat_type or guess_type(file.filename),
+        'file_url': f'/api/materials/file/{safe_name}',
+        'original_filename': file.filename,
+        'status': 'approved',
+        'contributor_name': 'Admin',
+        'contributor_email': current_user['email']
+    })
     
     # Trigger Notification
     create_notification(
         type='material',
         title='New Material Available!',
-        message=f"New {material_data.get('type')}: '{material_data.get('title')}' has been uploaded. Click to view.",
-        semester=material_data.get('semester', 'All'),
+        message=f"New {material.get('type')}: '{material.get('title')}' is ready for {material.get('semester')}. Click to view.",
+        semester=semester,
         link='/materials'
     )
-    
-    return jsonify(new_material), 201
+
+    return jsonify(material), 201
 
 @material_bp.route('/student-upload', methods=['POST'])
 @token_required
