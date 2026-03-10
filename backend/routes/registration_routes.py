@@ -55,7 +55,10 @@ def register():
     return jsonify(reg), 201
 
 @registration_bp.route('/', methods=['GET'])
-def list_all_registrations():
+@token_required
+def list_all_registrations(current_user):
+    if current_user['role'] != 'admin':
+        return jsonify({'error': 'Unauthorized'}), 403
     return jsonify(get_all_registrations())
 
 @registration_bp.route('/event/<event_id>', methods=['GET'])

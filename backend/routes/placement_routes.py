@@ -1,13 +1,17 @@
 from flask import Blueprint, request, jsonify
 from models.placement_model import create_placement, fetch_all_placements, delete_placement, update_placement
 from models.notification_model import create_notification
+from utils.auth import token_required
 
 from models.placement_application_model import create_application, fetch_applications_by_placement, fetch_all_applications, update_application_status
 
 placement_bp = Blueprint('placements', __name__)
 
 @placement_bp.route('/<id>', methods=['PUT'])
-def edit_placement(id):
+@token_required
+def edit_placement(current_user, id):
+    if current_user['role'] != 'admin':
+        return jsonify({'error': 'Unauthorized'}), 403
     data = request.get_json()
     res = update_placement(id, data)
     if res:
@@ -21,7 +25,10 @@ def get_placements():
     return jsonify(fetch_all_placements(page, limit))
 
 @placement_bp.route('/', methods=['POST'])
-def add_placement():
+@token_required
+def add_placement(current_user):
+    if current_user['role'] != 'admin':
+        return jsonify({'error': 'Unauthorized'}), 403
     data = request.get_json()
     if not data.get('company') or not data.get('role'):
         return jsonify({'error': 'Company and Role are required'}), 400
@@ -39,7 +46,10 @@ def add_placement():
     return jsonify(res), 201
 
 @placement_bp.route('/<id>', methods=['DELETE'])
-def remove_placement(id):
+@token_required
+def remove_placement(current_user, id):
+    if current_user['role'] != 'admin':
+        return jsonify({'error': 'Unauthorized'}), 403
     if delete_placement(id):
         return jsonify({'message': 'Placement deleted'})
     return jsonify({'error': 'Failed to delete'}), 404
@@ -63,7 +73,10 @@ def get_all_apps():
     return jsonify(fetch_all_applications())
 
 @placement_bp.route('/applications/<id>/status', methods=['PUT'])
-def set_app_status(id):
+@token_required
+def set_app_status(current_user, id):
+    if current_user['role'] != 'admin':
+        return jsonify({'error': 'Unauthorized'}), 403
     data = request.get_json()
     status = data.get('status')
     if update_application_status(id, status):

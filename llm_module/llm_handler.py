@@ -89,7 +89,13 @@ def _groq_chat(system_prompt: str, user_message: str) -> str:
         data = res.json()
         if 'choices' in data:
             return data['choices'][0]['message']['content'].strip()
-        return f"Groq Error: {json.dumps(data)}"
+            
+        # If API key is invalid or quota hit, return a clean message instead of JSON
+        error_msg = data.get('error', {}).get('message', '')
+        if 'Invalid API Key' in error_msg:
+            return "I'm currently undergoing maintenance (API Key mismatch). Please try again later or ask me about campus info that I can handle without the cloud AI!"
+        
+        return f"I'm having a bit of trouble connecting to my brain right now. Please try again in a moment!"
     except Exception as e:
         return f"Groq error: {str(e)}"
 

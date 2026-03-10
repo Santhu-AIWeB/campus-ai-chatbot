@@ -1,6 +1,7 @@
 from flask import Blueprint, request, jsonify, send_from_directory
 import os, uuid
 from models.question_paper_model import create_question_paper, get_all_question_papers, delete_question_paper, update_question_paper
+from utils.auth import token_required
 
 question_paper_bp = Blueprint('question_papers', __name__)
 
@@ -63,13 +64,19 @@ def serve_file(filename):
     return send_from_directory(UPLOAD_FOLDER, filename)
 
 @question_paper_bp.route('/<qp_id>', methods=['DELETE'])
-def remove_question_paper(qp_id):
+@token_required
+def remove_question_paper(current_user, qp_id):
+    if current_user['role'] != 'admin':
+        return jsonify({'error': 'Unauthorized'}), 403
     if delete_question_paper(qp_id):
         return jsonify({'message': 'Deleted'}), 200
     return jsonify({'error': 'Question paper not found'}), 404
 
 @question_paper_bp.route('/<qp_id>', methods=['PUT'])
-def edit_question_paper(qp_id):
+@token_required
+def edit_question_paper(current_user, qp_id):
+    if current_user['role'] != 'admin':
+        return jsonify({'error': 'Unauthorized'}), 403
     data = request.get_json()
     res = update_question_paper(qp_id, data)
     if res:

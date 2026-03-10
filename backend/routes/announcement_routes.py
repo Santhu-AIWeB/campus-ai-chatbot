@@ -3,11 +3,15 @@ from models.announcement_model import (
     create_announcement, get_all_announcements, delete_announcement, update_announcement
 )
 from models.notification_model import create_notification
+from utils.auth import token_required
 
 announcement_bp = Blueprint('announcements', __name__)
 
 @announcement_bp.route('/<ann_id>', methods=['PUT'])
-def edit_announcement(ann_id):
+@token_required
+def edit_announcement(current_user, ann_id):
+    if current_user['role'] != 'admin':
+        return jsonify({'error': 'Unauthorized'}), 403
     data = request.get_json()
     res = update_announcement(ann_id, data)
     if res:
@@ -21,7 +25,10 @@ def list_announcements():
     return jsonify(get_all_announcements(page, limit))
 
 @announcement_bp.route('/', methods=['POST'])
-def add_announcement():
+@token_required
+def add_announcement(current_user):
+    if current_user['role'] != 'admin':
+        return jsonify({'error': 'Unauthorized'}), 403
     data = request.get_json()
     if not data or not data.get('title'):
         return jsonify({'error': 'Title is required'}), 400
@@ -39,7 +46,10 @@ def add_announcement():
     return jsonify(ann), 201
 
 @announcement_bp.route('/<ann_id>', methods=['DELETE'])
-def remove_announcement(ann_id):
+@token_required
+def remove_announcement(current_user, ann_id):
+    if current_user['role'] != 'admin':
+        return jsonify({'error': 'Unauthorized'}), 403
     if delete_announcement(ann_id):
         return jsonify({'message': 'Deleted'}), 200
     return jsonify({'error': 'Announcement not found'}), 404

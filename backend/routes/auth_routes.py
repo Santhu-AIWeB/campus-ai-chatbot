@@ -2,6 +2,7 @@ from flask import Blueprint, request, jsonify
 from models.user_model import (
     find_user_by_email, create_user, check_user_password, user_to_dict
 )
+from utils.auth import token_required
 import jwt, datetime, os
 
 auth_bp = Blueprint('auth', __name__)
@@ -73,13 +74,19 @@ def register():
         return jsonify({'error': f'Internal Server Error: {str(e)}'}), 500
 
 @auth_bp.route('/users', methods=['GET'])
-def get_all_users():
+@token_required
+def get_all_users(current_user):
+    if current_user['role'] != 'admin':
+        return jsonify({'error': 'Unauthorized'}), 403
     from models.user_model import get_users, user_to_dict
     users = list(get_users().find())
     return jsonify([user_to_dict(u) for u in users])
 
 @auth_bp.route('/users/promote', methods=['POST'])
-def promote_user():
+@token_required
+def promote_user(current_user):
+    if current_user['role'] != 'admin':
+        return jsonify({'error': 'Unauthorized'}), 403
     data = request.get_json()
     user_id = data.get('userId')
     if not user_id:
@@ -88,10 +95,6 @@ def promote_user():
     from models.user_model import get_users
     from bson import ObjectId
     result = get_users().update_one({'_id': ObjectId(user_id)}, {'$set': {'role': 'admin'}})
-    
-    if result.modified_count > 0:
-        return jsonify({'message': 'User promoted to admin successfully'})
-    return jsonify({'error': 'User not found or already admin'}), 404
     
     if result.modified_count > 0:
         return jsonify({'message': 'User promoted to admin successfully'})
