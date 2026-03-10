@@ -1,6 +1,7 @@
 import requests
+import os
 
-RASA_URL = 'http://localhost:5005/webhooks/rest/webhook'
+RASA_URL = os.environ.get('RASA_URL', 'http://localhost:5005/webhooks/rest/webhook')
 
 def get_rasa_response(message: str, semester: str = None) -> str | None:
     """Send message to Rasa server, return first text response or None."""

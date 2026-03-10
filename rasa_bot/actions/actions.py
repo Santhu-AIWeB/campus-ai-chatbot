@@ -3,6 +3,9 @@ from rasa_sdk import Action, Tracker
 from rasa_sdk.executor import CollectingDispatcher
 from rasa_sdk.events import SlotSet
 import re
+import os
+
+BACKEND_URL = os.environ.get('BACKEND_URL', 'http://127.0.0.1:5000').rstrip('/')
 
 class ActionGetEvents(Action):
     def name(self) -> str:
@@ -11,7 +14,7 @@ class ActionGetEvents(Action):
     def run(self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: dict):
         print("DEBUG: ActionGetEvents triggered")
         try:
-            res = requests.get("http://127.0.0.1:5000/api/events", timeout=10)
+            res = requests.get(f"{BACKEND_URL}/api/events", timeout=10)
             data = res.json()
             events = data.get('items', [])
             
@@ -61,7 +64,7 @@ class ActionGetMaterials(Action):
                     normalized_sem = mapping.get(num_match.group(1))
 
         try:
-            url = "http://127.0.0.1:5000/api/materials/"
+            url = f"{BACKEND_URL}/api/materials/"
             params = {'exclude': 'Question Paper'}
             if normalized_sem: params['semester'] = normalized_sem
             
@@ -83,7 +86,7 @@ class ActionGetMaterials(Action):
             else:
                 message = f"Here are the materials{f' for {subject}' if subject else ''}{f' (Semester {normalized_sem})' if normalized_sem else ''}:\n"
                 for mat in filtered[:5]:
-                    link = f"http://127.0.0.1:5000{mat.get('fileUrl', '')}"
+                    link = f"{BACKEND_URL}{mat.get('fileUrl', '')}"
                     message += f"• {mat.get('title', 'Untitled')} 🔗 [View]({link})\n"
                 dispatcher.utter_message(text=message)
         except:
@@ -126,7 +129,7 @@ class ActionGetQuestionPapers(Action):
                     normalized_sem = mapping.get(num_match.group(1))
 
         try:
-            url = "http://127.0.0.1:5000/api/question-papers/"
+            url = f"{BACKEND_URL}/api/question-papers/"
             params = {}
             if normalized_sem: params['semester'] = normalized_sem
             
@@ -148,7 +151,7 @@ class ActionGetQuestionPapers(Action):
             else:
                 message = f"Found these question papers{f' for {subject}' if subject else ''}{f' (Semester {normalized_sem})' if normalized_sem else ''}:\n"
                 for p in filtered[:5]:
-                    link = f"http://127.0.0.1:5000{p.get('fileUrl', '')}"
+                    link = f"{BACKEND_URL}{p.get('fileUrl', '')}"
                     message += f"• {p.get('title', 'Untitled')} [{p.get('subject', '')}] 🔗 [View Paper]({link})\n"
                 dispatcher.utter_message(text=message)
         except:
@@ -162,7 +165,7 @@ class ActionGetAnnouncements(Action):
     def run(self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: dict):
         query = tracker.latest_message.get('text', '').lower()
         try:
-            res = requests.get("http://127.0.0.1:5000/api/announcements/", timeout=10)
+            res = requests.get(f"{BACKEND_URL}/api/announcements/", timeout=10)
             announcements = res.json().get('items', [])
             
             # Sort by entry date (descending)
@@ -216,7 +219,7 @@ class ActionGetPlacements(Action):
     def run(self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: dict):
         query = tracker.latest_message.get('text', '').lower()
         try:
-            res = requests.get("http://127.0.0.1:5000/api/placements/", timeout=10)
+            res = requests.get(f"{BACKEND_URL}/api/placements/", timeout=10)
             items = res.json().get('items', [])
             
             if not items:
